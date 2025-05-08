@@ -1,0 +1,53 @@
+{
+    "@id": "dtmi:DigitalTwin:Regulator;1",
+    "@type": "Interface",
+    "displayName": "Regulator",
+    "@context": "dtmi:dtdl:context;2",
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "id",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "name",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "institution",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "certification_authority",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "compliance_rules",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "contact",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "audit_frequency",
+            "schema": "integer"
+        },
+        {
+            "@type": "Property",
+            "name": "total_audits",
+            "schema": "integer"
+        },
+        {
+            "@type": "Property",
+            "name": "non_compliance_count",
+            "schema": "integer"
+        }
+    ]
+}

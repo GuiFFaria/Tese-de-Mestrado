@@ -1,0 +1,5 @@
+Feedback - Modelos
+- Adicionar lote ao modelo dos produtos (Lote ser um modelo)
+- Atores / Instalações / processos
+- Desenhar ER dos Modelos
+- 

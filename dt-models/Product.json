@@ -1,0 +1,62 @@
+{
+    "@id": "dtmi:DigitalTwin:Product;1",
+    "@type": "Interface",
+    "displayName": "Product",
+    "@context": "dtmi:dtdl:context;2",
+    "contents": [
+        {
+            "@type": "Property",
+            "name": "id",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "name",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "type",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "production_location",
+            "schema": {
+                "type": "object",
+                "fields": [
+                    {
+                        "name": "latitude",
+                        "type": "double"
+                    },
+                    {   
+                        "name": "longitude",
+                        "type": "double"
+                    },
+                    {
+                        "name": "street",
+                        "type": "string"
+                    },
+                    {
+                        "name": "city",
+                        "type": "string"
+                    },
+                    {
+                        "name": "country",
+                        "type": "string"
+                    }
+                ]
+            }
+        },
+        {
+            "@type": "Property",
+            "name": "certification",
+            "schema": "string"
+        },
+        {
+            "@type": "Property",
+            "name": "production_date",
+            "schema": "dateTime"
+        }
+    ]
+}

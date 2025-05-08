@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azure-Function", "Azure-Function\Azure-Function.csproj", "{E7DE2432-A5ED-66F7-361B-1C2EC4CC31ED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Azure-Function (1)", "Azure-Function (1)", "{0BDAB6CE-BC23-840B-0B0E-AFD6F4B9EA97}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "obj", "obj", "{023DEC56-45B0-2584-5EC9-0B7DD116FA43}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{DB5B5FA2-B32C-870D-AC88-81D7CFF36839}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net8.0", "net8.0", "{509232FB-02F2-8134-F4AF-51CFE6E50B85}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7DE2432-A5ED-66F7-361B-1C2EC4CC31ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7DE2432-A5ED-66F7-361B-1C2EC4CC31ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7DE2432-A5ED-66F7-361B-1C2EC4CC31ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7DE2432-A5ED-66F7-361B-1C2EC4CC31ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EF35276-BB2E-31A0-9E84-FBF05B9FDD9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EF35276-BB2E-31A0-9E84-FBF05B9FDD9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EF35276-BB2E-31A0-9E84-FBF05B9FDD9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EF35276-BB2E-31A0-9E84-FBF05B9FDD9E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{023DEC56-45B0-2584-5EC9-0B7DD116FA43} = {0BDAB6CE-BC23-840B-0B0E-AFD6F4B9EA97}
+		{DB5B5FA2-B32C-870D-AC88-81D7CFF36839} = {023DEC56-45B0-2584-5EC9-0B7DD116FA43}
+		{509232FB-02F2-8134-F4AF-51CFE6E50B85} = {DB5B5FA2-B32C-870D-AC88-81D7CFF36839}
+		{0EF35276-BB2E-31A0-9E84-FBF05B9FDD9E} = {509232FB-02F2-8134-F4AF-51CFE6E50B85}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {79539541-FB30-4305-91C3-EE47A5EBA8DA}
+	EndGlobalSection
+EndGlobal
