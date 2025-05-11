@@ -125,11 +125,6 @@
         },
         {
             "@type": "Property",
-            "name": "timestamp",
-            "schema": "dateTime"
-        },
-        {
-            "@type": "Property",
             "name": "last_audit",
             "schema": "dateTime"
         },

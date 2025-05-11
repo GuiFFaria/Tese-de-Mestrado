@@ -1,0 +1,59 @@
+{
+    "@id": "dtmi:DigitalTwin:Storage;1",
+    "@type": "Interface",
+    "displayName": "Storage",
+    "@context": "dtmi:dtdl:context;2",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "id",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "type",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "capacity",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "temperatureControl",
+        "schema": "boolean"
+      },
+      {
+        "@type": "Property",
+        "name": "humidityControl",
+        "schema": "boolean"
+      },
+      {
+        "@type": "Property",
+        "name": "temperature",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "humidity",
+        "schema": "double"
+      },
+      {
+        "@type": "Relationship",
+        "name": "storedProducts",
+        "target": "dtmi:DigitalTwin:Product;1"
+      },
+      {
+        "@type": "Relationship",
+        "name": "usedBy",
+        "target": "dtmi:DigitalTwin:Manufacturer;1"
+      },
+      {
+        "@type": "Relationship",
+        "name": "regulatedBy",
+        "target": "dtmi:DigitalTwin:Regulator;1"
+      }
+    ]
+  }
+  

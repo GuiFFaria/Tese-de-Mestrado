@@ -1,0 +1,54 @@
+{
+    "@id": "dtmi:DigitalTwin:Batch;1",
+    "@type": "Interface",
+    "displayName": "Batch",
+    "@context": "dtmi:dtdl:context;2",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "id",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "batchNumber",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "ProdPhaseName",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "InitialDate",
+        "schema": "dateTime"
+      },
+      {
+        "@type": "Property",
+        "name": "FinalDate",
+        "schema": "dateTime"
+      },
+      {
+        "@type": "Property",
+        "name": "quantity",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "state",
+        "schema": "string"
+      },
+      {
+        "@type": "Relationship",
+        "name": "rawProducts",
+        "target": "dtmi:DigitalTwin:RawProduct;1"
+      },
+      {
+        "@type": "Relationship",
+        "name": "products",
+        "target": "dtmi:DigitalTwin:Product;1"
+      }
+    ]
+  }
+  

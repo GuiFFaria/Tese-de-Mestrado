@@ -1,0 +1,69 @@
+{
+    "@id": "dtmi:DigitalTwin:ManufacturingProcess;1",
+    "@type": "Interface",
+    "displayName": "ManufacturingProcess",
+    "@context": "dtmi:dtdl:context;2",
+    "contents": [
+      {
+        "@type": "Property",
+        "name": "id",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "name",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "description",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "startDate",
+        "schema": "dateTime"
+      },
+      {
+        "@type": "Property",
+        "name": "endDate",
+        "schema": "dateTime"
+      },
+      {
+        "@type": "Property",
+        "name": "status",
+        "schema": "string"
+      },
+      {
+        "@type": "Property",
+        "name": "temperature",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "humidity",
+        "schema": "double"
+      },
+      {
+        "@type": "Property",
+        "name": "duration_hours",
+        "schema": "double"
+      },
+      {
+        "@type": "Relationship",
+        "name": "usedRawProducts",
+        "target": "dtmi:DigitalTwin:RawProduct;1"
+      },
+      {
+        "@type": "Relationship",
+        "name": "makesProduct",
+        "target": "dtmi:DigitalTwin:Product;1"
+      },
+      {
+        "@type": "Relationship",
+        "name": "manufacturer",
+        "target": "dtmi:DigitalTwin:Manufacturer;1"
+      }
+    ]
+  }
+  
