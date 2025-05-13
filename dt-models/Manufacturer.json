@@ -137,6 +137,11 @@
             "@type": "Relationship",
             "name": "use",
             "target": "dtmi:DigitalTwin:RawProduct;1"
+        },
+        {
+            "@type": "Relationship",
+            "name": "use",
+            "target": "dtmi:DigitalTwin:ManufacturingProcess;1"
         }
     ]
 }

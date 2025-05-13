@@ -48,6 +48,21 @@
             "@type": "Property",
             "name": "non_compliance_count",
             "schema": "integer"
+        },
+        {
+            "@type": "Relationship",
+            "name": "regulates",
+            "target": "dtmi:DigitalTwin:Producer;1"
+        },
+        {
+            "@type": "Relationship",
+            "name": "regulates",
+            "target": "dtmi:DigitalTwin:Manufacturer;1"
+        },
+        {
+            "@type": "Relationship",
+            "name": "regulates",
+            "target": "dtmi:DigitalTwin:Seller;1"
         }
     ]
 }

@@ -43,6 +43,11 @@
             "@type": "Property",
             "name": "decision_level",
             "schema": "string"
+        },
+        {
+            "@type": "Relationship",
+            "name": "sets policies for",
+            "target": "dtmi:DigitalTwin:Regulator;1"
         }
     ]
 }
