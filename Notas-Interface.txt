@@ -17,16 +17,5 @@ Interface - Notas
 
 
 =======================================
-adicionar auditoria - reguladora para empresa
-passar tudo para empresa
-certificação
-adicionar registos temporais
-
-====== EM FALTA =======
-
-- ecological_footprint -> pode ser calculada
-- anual_profit -> pode ser calculada
-- annual_expenses -> pode ser calculada
-
-- waste_management_types -> ?
-- pest_control_techniques -> ?
+gráficos -> chart.js
+mapas -> leaflet

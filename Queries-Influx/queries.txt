@@ -1,5 +1,0 @@
-from(bucket: "cheese_production")
- |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
- |> filter(fn: (r) => r["_measurement"] == "cheese_factory")
- |> filter(fn: (r) => r["id"] == "dfeeb1d1-0733-401c-914d-92f892a194a6")
- |> filter(fn: (r) => r["_field"] == "energy_consumption")
