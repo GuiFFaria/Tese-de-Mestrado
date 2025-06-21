@@ -11,6 +11,12 @@ class User(models.Model):
     
 class Company(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    type = models.CharField(max_length=50, choices=[
+        ('producer', 'Producer'),
+        ('manufacturer', 'Manufacturer'),
+        ('seller', 'Seller'),
+        ('mixed', 'Mixed')  # For companies that engage in multiple roles
+    ], default="")
     location = models.JSONField()  # Assuming location is a JSON object with latitude and longitude
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='company')
 
@@ -80,7 +86,7 @@ class Audit(models.Model):
         ('pending', 'Pending')
     ])
     def __str__(self):
-        return f"Audit for {self.company.name} - {self.certification.name} on {self.date}"
+        return f"Audit for {self.company.name} - {self.certification.name} on {self.audit_date}"
     
 class Employee(models.Model):
     name = models.CharField(max_length=255)
@@ -166,6 +172,10 @@ class Machine(models.Model):
     type = models.CharField(max_length=255)
     manufacturer = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='machines')
 
+    def __str__(self):
+        return f"{self.type} Machine by {self.manufacturer.name}"
+    
+
 
 class MachineProcessList(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name='processes')
@@ -176,7 +186,6 @@ class MachineProcessList(models.Model):
     
 class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, related_name='products')
-    machine_id = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name='products')
     production_location = models.JSONField()  # Assuming location is a JSON object with latitude and longitude
     production_date = models.DateTimeField()
     price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of the product
@@ -223,7 +232,7 @@ class IoTNode(models.Model):
     batery_level = models.DecimalField(max_digits=5, decimal_places=2, default=100.0)  # Battery level in percentage
 
     def __str__(self):
-        return f"IoT Node {self.node_id} for {self.product.product_reference}"
+        return f"IoT Node {self.name} for {self.machine.type} - Status: {self.status}"
     
 
 class IoTNodeParameter(models.Model):

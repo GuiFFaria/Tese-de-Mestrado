@@ -1,3 +1,29 @@
 from django.contrib import admin
+from .models import User, Company, Regulator, PolicyMaker, Certification, RegulatorCertificationList, CompanyCertificationsList, Audit, Employee, RawProduct, ProcessType, Process, RawProductUsage, EmployeeProcessList, ProductType, ProcTypeProdTypeList, Machine, MachineProcessList, Product, ProductProcessList, ProductCertificationList, IoTNode, IoTNodeParameter, Alert, MachineDetails
 
-# Register your models here.
+admin.site.register(User)
+admin.site.register(Company)
+admin.site.register(Regulator)
+admin.site.register(PolicyMaker)
+admin.site.register(Certification)
+admin.site.register(RegulatorCertificationList)
+admin.site.register(CompanyCertificationsList)
+admin.site.register(Audit)
+admin.site.register(Employee)
+admin.site.register(RawProduct)
+admin.site.register(ProcessType)
+admin.site.register(Process)
+admin.site.register(RawProductUsage)
+admin.site.register(EmployeeProcessList)
+admin.site.register(ProductType)
+admin.site.register(ProcTypeProdTypeList)
+admin.site.register(Machine)
+admin.site.register(MachineProcessList)
+admin.site.register(Product)
+admin.site.register(ProductProcessList)
+admin.site.register(ProductCertificationList)
+admin.site.register(IoTNode)
+admin.site.register(IoTNodeParameter)
+admin.site.register(Alert)
+admin.site.register(MachineDetails)
+
