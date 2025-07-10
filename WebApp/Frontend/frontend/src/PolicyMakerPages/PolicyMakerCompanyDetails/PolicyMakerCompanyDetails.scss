@@ -1,0 +1,125 @@
+.company-details-page {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f9fc;
+  min-height: 100vh;
+  padding: 1.5rem;
+
+  .page-content {
+    display: flex;
+    padding-top: 1.5rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .sidebar {
+    width: 300px;
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border: 2px solid #009fe3;
+
+    h2 {
+      font-size: 20px;
+      margin-bottom: 1rem;
+      color: #0077c0;
+    }
+
+    p {
+      font-size: 14px;
+      color: #333;
+      margin-bottom: 0.5rem;
+    }
+
+    ul {
+      padding-left: 1rem;
+      li {
+        font-size: 14px;
+        color: #333;
+      }
+    }
+  }
+
+  .company-details {
+    flex: 1;
+    border: 2px solid #009fe3;
+    border-radius: 10px;
+    padding: 1.5rem;
+    background-color: white;
+    margin: 0;
+
+    h1 {
+      font-size: 24px;
+      color: #0077c0;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 14px;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      font-size: 20px;
+      color: #0077c0;
+      margin: 2rem 0 1rem;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5rem;
+        font-size: 14px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #e1f1fb;
+        color: #0077c0;
+      }
+    }
+
+    .chart-section {
+      margin-top: 2rem;
+
+      .chart-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+
+        h2 {
+          font-size: 20px;
+          color: #0077c0;
+          margin: 0;
+        }
+
+        select {
+          padding: 0.4rem 0.6rem;
+          border: 1px solid #009fe3;
+          border-radius: 6px;
+          background-color: white;
+          color: #0077c0;
+          font-weight: bold;
+          font-size: 0.9rem;
+          cursor: pointer;
+
+          &:hover {
+            background-color: #e6f7ff;
+          }
+        }
+      }
+
+      .recharts-wrapper {
+        width: 100%;
+        height: 300px;
+      }
+    }
+  }
+}

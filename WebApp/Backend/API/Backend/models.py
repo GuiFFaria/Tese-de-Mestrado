@@ -154,7 +154,20 @@ class EmployeeProcessList(models.Model):
         return f"{self.employee.name} worked on process {self.process.reference}"
 
 class ProductType(models.Model):
-    type = models.CharField(max_length=255, unique=True)
+    type = models.CharField(max_length=255, choices=[
+        ('meat', 'Meat'),
+        ('dairy', 'Dairy'),
+        ('fish', 'Fish'),
+        ('honey & marmalade', 'Honey & Marmalade'),
+        ('fruit & vegetables', 'Fruit & Vegetables'),
+        ('pasta & other', 'Pasta & Other'),
+        ('oil', 'Oil'),
+        ('beverages', 'Beverages'),
+        ('eggs', 'Eggs'),
+        ('salt & herbs', 'Salt & Herbs'),
+        ('tofu', 'Tofu'),
+        ])
+    description = models.TextField()
     manufacturer = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='product_types')
 
     def __str__(self):
@@ -179,10 +192,10 @@ class Machine(models.Model):
 
 class MachineProcessList(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE, related_name='processes')
-    process = models.ForeignKey(Process, on_delete=models.CASCADE, related_name='machines')
+    process_type = models.ForeignKey(ProcessType, on_delete=models.CASCADE, related_name='machines')
 
     def __str__(self):
-        return f"{self.machine.type} used in process {self.process.reference}"
+        return f"{self.machine.type} used in process {self.process_type.type}"
     
 class Product(models.Model):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE, related_name='products')
@@ -198,6 +211,8 @@ class Product(models.Model):
     ])
     product_reference = models.CharField(max_length=255, unique=True)  # Unique reference for the product
     expiration_date = models.DateField()  # Date when the product expires
+    chain_position = models.IntegerField()
+    batch_number = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return f"{self.product_type.type} Product - {self.product_reference} by {self.product_type.manufacturer.name}"

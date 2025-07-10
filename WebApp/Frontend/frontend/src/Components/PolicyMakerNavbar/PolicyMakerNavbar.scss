@@ -1,0 +1,38 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    border: 2px solid #009fe3;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    background: #fff;
+    gap: 2rem;
+
+    .navbar-logo {
+      height: 5rem;
+      margin-left: 3rem;
+      margin-right: 12rem;
+    }
+
+    .navbar-links {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-left: 12rem;
+      gap: 7rem;
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s;
+
+        &:hover {
+          color: #009fe3;
+          text-decoration: underline;
+        }
+      }
+    }
+  }

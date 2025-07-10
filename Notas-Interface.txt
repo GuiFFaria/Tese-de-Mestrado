@@ -19,3 +19,52 @@ Interface - Notas
 =======================================
 gráficos -> chart.js
 mapas -> leaflet
+
+
+Páginas - Company
+
+- Ver processos ativos  -> Iniciar processos
+                        -> Registar leite (?)
+                        -> 
+
+- Ver Histórico de Processos
+
+- Ver Alertas
+
+- Definições   -> Criar Tipo de processos 
+               -> Criar Alertas
+               -> Registar entrada de Matéria-prima
+
+
+Melhorias:
+tratar informações redundantes visualmente - feito
+esquecer a pegada ecológica e apresentar os dados sem cálculos - feito
+acrescentar (nos reports) a informação inicial agrupada por concelhos e depois ver cada concelho em específico - feito
+Tipo de Produto ser enum -> lista geofood - feito 
+paginator em vez de um scroll - feito
+
+Dúvidas:
+- Esquecer a página de processos ativos visto que estes aparecem nos boards da página inicial?
+- colocar botão para Iniciar processo na página inicial?
+- Devo iniciar a instância do processo seguinte ao terminar um processo ou termino apenas o processo atual e tenho apenas o botão de criar processo na página inicial?
+- Por exemplo, ao iniciar o processo do aquecimento do leite, onde devo poder introduzir a quantidade de leite que vou utilizar?
+- O mesmo se aplica para a Salga e para a adição de Cardo
+
+
+ToDo:
+- Página de Processo - ver informação relativa ao processo (Dados dos sensores, Alertas, etc)
+                     - Terminar esse processo e passar o Lote ao próximo processo
+                     - deve ser possível selecionar os produtos que vão seguir para o próximo processo
+
+- Página de Definições  - criar tipos de processos
+                        - criar alertas
+                        - registar entrada de matéria-prima
+
+- Página de Alertas - ver alertas
+
+
+Sugestões:
+- Página de Processo - informação histórica dos sensores
+- Página de lista de produtos
+- Para cada produto ver o seu histórico de Processos
+- Adicionar Gestão de Matérias-Primas

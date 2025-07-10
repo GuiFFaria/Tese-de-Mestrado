@@ -1,0 +1,202 @@
+.policy-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+  font-family: 'Arial', sans-serif;
+  background-color: #ffffff;
+  padding: 20px;
+  box-sizing: border-box;
+  gap: 20px;
+
+  
+
+  .content-wrapper {
+    display: flex;
+    flex: 1;
+    height: calc(100vh - 70px);
+    gap: 20px;
+
+    .sidebar {
+      width: 18.75rem;
+      background-color: #ffffff;
+      border: 2px solid #009fe3;
+      border-radius: 8px;
+      padding: 0 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      h4 {
+        font-size: 15px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .filters {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 12px;
+        margin-bottom: 30px;
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 10px;
+          padding: 7px 15px;
+          background-color: transparent;
+          border: 1.5px solid #009fe3;
+          border-radius: 6px;
+          font-size: 13px;
+          cursor: pointer;
+          transition: background 0.3s, color 0.3s;
+
+          .icon {
+            width: 20px;
+            height: 20px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+          }
+
+          &.active {
+            background-color: #009fe3;
+            color: white;
+          }
+
+          &:hover {
+            background-color: #009fe3;
+            color: white;
+          }
+
+            .icon.producer {
+                background-image: url('../../Assets/triangulo-producer.png');
+            }
+            .icon.manufacturer {
+                background-image: url('../../Assets/circulo-manufacturer.png');
+            }
+            .icon.seller {
+                background-image: url('../../Assets/quadrado-seller.png');
+            }
+        }
+
+      }
+
+      .certification-selector {
+        width: 100%;
+
+        label {
+          font-size: 15px;
+          font-weight: bold;
+          display: block;
+          margin-bottom: 5px;
+        }
+
+        select {
+          width: 100%;
+          padding: 8px 10px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .map-wrapper {
+      flex: 1;
+      background-color: white;
+      border: 2px solid #009fe3;
+      border-radius: 8px;
+      box-sizing: border-box;
+      height: 100%;
+
+      .map-container {
+        height: 100%;
+        width: 100%;
+        border-radius: 6px;
+        overflow: hidden;
+
+        .details-button {
+          margin-top: 1rem;
+          margin-left: 2.5rem;
+          background-color: #009fe3;
+          color: white;
+          border: none;
+          padding: 8px 12px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 11px;
+          transition: background-color 0.3s;
+
+          &:hover {
+            background-color: #007bb5;
+          }
+        }
+      }
+    }
+  }
+
+  // Responsivo
+  @media (max-width: 1024px) {
+    .content-wrapper {
+      flex-direction: column;
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 1rem;
+      }
+
+      .map-wrapper {
+        width: 100%;
+        height: 400px;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px;
+
+    .navbar {
+      flex-direction: column;
+      gap: 1rem;
+
+      .navbar-logo {
+        margin-right: 0;
+      }
+
+      .navbar-links {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+    }
+
+    .content-wrapper {
+      .sidebar {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px;
+
+        .filters button {
+          font-size: 12px;
+          padding: 6px 10px;
+        }
+
+        .certification-selector select {
+          font-size: 13px;
+        }
+      }
+
+      .map-wrapper {
+        height: 300px;
+      }
+    }
+  }
+}
+
