@@ -273,7 +273,7 @@
       }
 
       .add-btn {
-        width: 25%;
+        max-width: 50%;
         background-color: #009fe3;
         color: white;
         padding: 0.5rem 1rem;
@@ -332,6 +332,48 @@
     }
 
   }
+
+  @media (max-width: 1500px) {
+    .modal-content {
+      width: 70%;
+      padding: 1.5rem;
+
+      h2 {
+        font-size: 1.4rem;
+      }
+
+      .material-line {
+        flex-wrap: wrap;
+
+        select,
+        input[type='number'] {
+          min-width: 140px;
+          flex: 1 1 45%;
+          margin-bottom: 0.5rem;
+        }
+      }
+
+      .add-btn {
+        min-width: 50%;
+        font-size: 0.9rem;
+      }
+
+      .product-count-input {
+        width: 50%;
+        max-width: 140px;
+      }
+
+      .modal-buttons {
+        justify-content: flex-end;
+
+        .cancel,
+        .confirm {
+          min-width: 100px;
+        }
+      }
+    }
+  }
+
 
   
 

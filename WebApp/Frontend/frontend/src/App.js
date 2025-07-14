@@ -11,6 +11,7 @@ import CompanyHomepage from './CompanyPages/CompanyHomepage/CompanyHomepage';
 import ProcessInstance from './CompanyPages/ProcessInstance/ProcessInstance';
 import CompanyHistory from './CompanyPages/CompanyHistory/CompanyHistory';
 import CompanyRawMaterials from './CompanyPages/CompanyRawMaterials/CompanyRawMaterials';
+import CompanySettings from './CompanyPages/CompanySettings/CompanySettings';
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
             <Route path='/company/homepage' element={<CompanyHomepage />} />
             <Route path='/company/process/:processId' element={<ProcessInstance />} />
             <Route path='/company/raw-materials' element={<CompanyRawMaterials />} />
+            <Route path='/company/settings' element={<CompanySettings />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/" />} />

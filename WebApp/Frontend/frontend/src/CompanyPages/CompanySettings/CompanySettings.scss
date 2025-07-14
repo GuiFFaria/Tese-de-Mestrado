@@ -1,0 +1,242 @@
+.wrapper {
+  padding: 1.5rem;
+
+  .company-settings {
+    padding: 2rem;
+    border: 2px solid #009fe3;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+
+    .title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1d1d1d;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background-color: white;
+      border: 1px solid #009fe3;
+      border-radius: 12px;
+      padding: 1.5rem;
+      max-width: 100vw;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      margin-bottom: 2rem;
+
+      h2 {
+        font-size: 18px;
+        color: #009fe3;
+        margin-bottom: 1rem;
+      }
+
+      .empty-text {
+        color: #777;
+        margin-bottom: 1rem;
+      }
+
+      .process-list,
+      .product-list,
+      .machine-list {
+        list-style-type: disc;
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+
+        li {
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+        }
+      }
+
+      .alert-list {
+        list-style-type: circle;
+        padding-left: 1.5rem;
+        margin-top: 0.5rem;
+
+        li {
+          font-size: 14px;
+          color: #555;
+          margin-bottom: 0.3rem;
+        }
+      }
+
+      .add-product-form,
+      .add-machine-form {
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+
+        input {
+          padding: 0.6rem;
+          border: 1px solid #ccc;
+          border-radius: 6px;
+          font-size: 16px;
+        }
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.4rem;
+          padding: 0.6rem 1rem;
+          background-color: #009fe3;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 15px;
+
+          svg {
+            stroke-width: 2;
+          }
+
+          &:hover {
+            background-color: #007bb5;
+          }
+        }
+      }
+
+      .button-group {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        .custom-button {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 10px 14px;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: 0.2s ease-in-out;
+          border: 2px solid transparent;
+
+          &.outline {
+            background-color: transparent;
+            color: #009fe3;
+            border: 2px solid #009fe3;
+
+            &:hover {
+              background-color: #e6f5fc;
+            }
+          }
+
+          svg {
+            stroke-width: 2;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: white;
+  border: 2px solid #009fe3;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+
+  h2 {
+    margin-bottom: 2rem;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  input,
+  select {
+    width: 90%;
+    padding: 0.6rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  select {
+    background-color: white;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23666'%3E%3Cpath d='M4 6l4 4 4-4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 12px;
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      flex: 1;
+      margin: 0 0.5rem;
+      padding: 0.6rem;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:first-child {
+        background-color: #009fe3;
+        color: white;
+      }
+
+      &:last-child {
+        background-color: #ccc;
+
+        &:hover {
+          background-color: #aaa;
+        }
+      }
+    }
+  }
+
+  .template-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
+
+    li {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
+      &.selected {
+        border-color: #009fe3;
+        background-color: #e6f7ff;
+      }
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+  }
+}

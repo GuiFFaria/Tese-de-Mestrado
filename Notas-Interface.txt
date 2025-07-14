@@ -68,3 +68,9 @@ Sugestões:
 - Página de lista de produtos
 - Para cada produto ver o seu histórico de Processos
 - Adicionar Gestão de Matérias-Primas
+
+
+ToDO:
+-Página de Empregabilidade
+- Definições - acrescentar máquinas e alertas
+- Homepage -acrescentar quantidades atuais de matérias-Primas

@@ -29,9 +29,9 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className="navbar">
+            <nav className="company-navbar">
                 <img src={geoparkLogo} alt="Geopark" className="navbar-logo" />
-                <div className="navbar-links">
+                <div className="company-navbar-links">
                     <div onClick={() => handleHomeClick()}>
                         <House size={24} className="menu-icon" />
                         <div><i className="fa fa-home" />Início</div>
@@ -44,13 +44,13 @@ const Navbar = () => {
                         <History size={24} className="menu-icon" />
                         <div><i className="fa fa-file-alt" /> Histórico</div>
                     </div>
-                    <div onClick={() => handleSettingsClick()}>
-                        <Settings size={24} className="menu-icon" />
-                        <div><i className="fa fa-file-alt" /> Definições</div>
-                    </div>
                     <div onClick={() => handleRawMaterialsClick()}>
                         <NotebookPen size={24} className="menu-icon" />
                         <div><i className="fa fa-file-alt" /> Matérias-Primas</div>
+                    </div>
+                    <div onClick={() => handleSettingsClick()}>
+                        <Settings size={24} className="menu-icon" />
+                        <div><i className="fa fa-file-alt" /> Definições</div>
                     </div>
                     <div onClick={() => handleLogoutClick()}>
                         <LogOut size={24} className="menu-icon" />
