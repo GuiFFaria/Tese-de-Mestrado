@@ -10,8 +10,8 @@ const Navbar = () => {
     const handleHomeClick = () => {
         navigate('/company/homepage');
     };
-    const handleProcessesClick = () => {
-        navigate('/company/active-processes');
+    const handleRHClick = () => {
+        navigate('/company/employees');
     }
     const handleHistoryClick = () => {
         navigate('/company/history');
@@ -36,13 +36,13 @@ const Navbar = () => {
                         <House size={24} className="menu-icon" />
                         <div><i className="fa fa-home" />Início</div>
                     </div>
-                    <div onClick={() => handleProcessesClick()}>
+                    <div onClick={() => handleRHClick()}>
                         <List size={24} className="menu-icon" />
-                        <div><i className="fa fa-file-alt" /> Processos Ativos</div>
+                        <div><i className="fa fa-file-alt" /> Rec. Humanos</div>
                     </div>
                     <div onClick={() => handleHistoryClick()}>
                         <History size={24} className="menu-icon" />
-                        <div><i className="fa fa-file-alt" /> Histórico</div>
+                        <div><i className="fa fa-file-alt" /> Gestão de Lotes</div>
                     </div>
                     <div onClick={() => handleRawMaterialsClick()}>
                         <NotebookPen size={24} className="menu-icon" />

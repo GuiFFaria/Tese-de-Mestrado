@@ -163,6 +163,7 @@
             display: flex;
             flex-direction: column;
             position: relative;
+            max-width: 70%;
 
             h3 {
                 color: #009fe3;
@@ -197,6 +198,10 @@
                             border-radius: 4px;
                             border: 1px solid #009fe3;
                         }
+
+                        input::placeholder {
+                          color: red;
+                        }
                     }
 
                     .localizacao-fieldset {
@@ -212,6 +217,21 @@
 
                         .form-group {
                             margin-bottom: 0.5rem;
+
+                            input::placeholder {
+                              color: red;
+                            }
+                        }
+
+                        .checkbox-group {
+                          display: flex;
+                          align-items: center;
+                          gap: 0.5rem;
+
+                          input[type="checkbox"] {
+                            width: auto;
+                            margin-right: 0.5rem;
+                          }
                         }
                     }
                 }
@@ -277,10 +297,26 @@
                   .form-group input {
                     width: 100%;
                   }
+
+                  .checkbox-group {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+
+                    input[type="checkbox"] {
+                      width: auto;
+                      margin-right: 0.5rem;
+                    }
+                  }
                 }
 
                 .localizacao-fieldset {
                   padding: 0.75rem;
+                  width: 98%;
+
+                  .form-group input{
+                      width: 98%;
+                  }
                 }
               }
 

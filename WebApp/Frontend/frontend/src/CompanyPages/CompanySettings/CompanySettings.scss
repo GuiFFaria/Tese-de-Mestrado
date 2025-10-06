@@ -59,7 +59,33 @@
         }
       }
 
-      .add-product-form,
+      .custom-button {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 10px 14px;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: 0.2s ease-in-out;
+          border: 2px solid transparent;
+
+          &.outline {
+            background-color: transparent;
+            color: #009fe3;
+            border: 2px solid #009fe3;
+
+            &:hover {
+              background-color: #e6f5fc;
+            }
+          }
+
+          svg {
+            stroke-width: 2;
+          }
+        }
+      
       .add-machine-form {
         display: flex;
         flex-direction: column;
@@ -132,6 +158,33 @@
   }
 }
 
+.product-list li,
+.process-list li,
+.machine-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f9f9f9;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: #cc0000;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+
+  &:hover {
+    color: #ff0000;
+  }
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -158,6 +211,14 @@
     margin-bottom: 2rem;
     font-size: 20px;
     text-align: center;
+  }
+
+  h3 {
+    font-size: 16px;
+    margin-top: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #1d1d1d;
+    text-align: left;
   }
 
   input,
@@ -195,6 +256,10 @@
       &:first-child {
         background-color: #009fe3;
         color: white;
+
+        &:hover {
+          background-color: #007bb5;
+        }
       }
 
       &:last-child {
@@ -227,6 +292,38 @@
         border-color: #009fe3;
         background-color: #e6f7ff;
       }
+    }
+  }
+
+  .parameter-preview {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+
+    li {
+      font-size: 14px;
+      background-color: #e6f7ff;
+      border: 1px solid #009fe3;
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      margin-bottom: 0.5rem;
+      color: #1d1d1d;
+    }
+  }
+
+  .add-parameter-btn {
+    background-color: #009fe3;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #007bb5;
     }
   }
 

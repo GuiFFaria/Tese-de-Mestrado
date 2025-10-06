@@ -66,6 +66,13 @@
           width: 100%;
           border-collapse: collapse;
 
+          .no-processes-row {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            padding: 1rem;
+          }
+
           thead {
             background-color: lighten($card-color, 5%);
             border-bottom: 2px solid $border-color;

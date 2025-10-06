@@ -6,7 +6,9 @@ import { Plus, LayoutTemplate, X, Wrench } from "lucide-react";
 export default function CompanySettings() {
   const [processTypes, setProcessTypes] = useState([]);
   const [productTypes, setProductTypes] = useState([]);
+  const [newProductCategory, setNewProductCategory] = useState("");
   const [newProductName, setNewProductName] = useState("");
+  const [showProductModal, setShowProductModal] = useState(false);
   const [showScratchModal, setShowScratchModal] = useState(false);
   const [showTemplateModal, setShowTemplateModal] = useState(false);
   const [showMachineModal, setShowMachineModal] = useState(false);
@@ -23,21 +25,41 @@ export default function CompanySettings() {
   const [parameterUnit, setParameterUnit] = useState("");
   const [minValue, setMinValue] = useState("");
   const [maxValue, setMaxValue] = useState("");
+  const [selectedProcessType, setSelectedProcessType] = useState("");
 
   // NOVOS ESTADOS PARA SENSORES
   const [showSensorModal, setShowSensorModal] = useState(false);
   const [selectedMachineIndex, setSelectedMachineIndex] = useState(null);
   const [sensorName, setSensorName] = useState("");
-  const [sensorParameter, setSensorParameter] = useState("");
-  const [sensorUnit, setSensorUnit] = useState("");
-  const [sensorMin, setSensorMin] = useState("");
-  const [sensorMax, setSensorMax] = useState("");
+  // const [sensorParameter, setSensorParameter] = useState("");
+  // const [sensorUnit, setSensorUnit] = useState("");
+  // const [sensorMin, setSensorMin] = useState("");
+  // const [sensorMax, setSensorMax] = useState("");
+
+  const [sensorParameters, setSensorParameters] = useState([]);
+  const [currentParamName, setCurrentParamName] = useState("");
+  const [currentParamUnit, setCurrentParamUnit] = useState("");
+  const [currentParamMin, setCurrentParamMin] = useState("");
+  const [currentParamMax, setCurrentParamMax] = useState("");
 
   const templates = [
-    { name: "Produção de Queijo", position: 1 },
-    { name: "Engarrafamento de Água", position: 2 },
-    { name: "Tratamento de Lã", position: 3 },
+    { name: "Produção", position: 1 },
+    { name: "Fabricação", position: 2 },
+    { name: "Entrega", position: 3 },
   ];
+
+  const handleAddProductType = () => setShowProductModal(true);
+
+  const confirmAddProductType = () => {
+    if (newProductCategory.trim() && newProductName.trim()) {
+      setProductTypes([...productTypes, `${newProductCategory} - ${newProductName}`]);
+      setNewProductCategory("");
+      setNewProductName("");
+      setShowProductModal(false);
+    } else {
+      alert("Selecione a categoria e insira o nome do produto.");
+    }
+  };
 
   const handleCreateFromScratch = () => setShowScratchModal(true);
   const handleCreateFromTemplate = () => setShowTemplateModal(true);
@@ -66,36 +88,31 @@ export default function CompanySettings() {
   };
 
   const confirmTemplate = () => {
-    if (selectedTemplateIndex !== null && selectedProductType.trim()) {
-      const selectedTemplate = templates[selectedTemplateIndex];
-      setProcessTypes([
-        ...processTypes,
-        {
-          name: selectedTemplate.name,
-          position: selectedTemplate.position,
-          productType: selectedProductType,
-        },
-      ]);
-      setSelectedTemplateIndex(null);
-      setSelectedProductType("");
-      setShowTemplateModal(false);
+    if (selectedProductType.trim()) {
+      for (const template of templates) {
+        setProcessTypes([
+          ...processTypes,
+          {
+            name: template.name,
+            position: template.position,
+            productType: selectedProductType,
+          },
+        ]);
+        setSelectedTemplateIndex(null);
+        setSelectedProductType("");
+        setShowTemplateModal(false);
+      }
     } else {
       alert("Escolha um template e um tipo de produto.");
     }
   };
 
-  const handleAddProductType = () => {
-    if (newProductName.trim()) {
-      setProductTypes([...productTypes, newProductName.trim()]);
-      setNewProductName("");
-    }
-  };
-
   const handleAddMachine = () => {
-    if (machineType.trim() && machineManufacturer.trim()) {
+    if (machineType.trim() && machineManufacturer.trim() && selectedProcessType) {
       const newMachine = {
         type: machineType,
         manufacturer: machineManufacturer,
+        processType: selectedProcessType, // 👈 associação ao processo
         alerts: parameterName
           ? [
               {
@@ -115,48 +132,85 @@ export default function CompanySettings() {
       setParameterUnit("");
       setMinValue("");
       setMaxValue("");
+      setSelectedProcessType(""); // resetar seleção
     } else {
-      alert("Preencha os campos obrigatórios da máquina.");
+      alert("Preencha os campos obrigatórios da máquina e associe a um tipo de processo.");
     }
   };
-
   // NOVA FUNÇÃO PARA ADICIONAR SENSOR A UMA MÁQUINA EXISTENTE
   const handleAddSensor = () => {
     if (
       selectedMachineIndex !== null &&
       sensorName.trim() &&
-      sensorParameter.trim() &&
-      sensorUnit.trim() &&
-      sensorMin !== "" &&
-      sensorMax !== ""
+      sensorParameters.length > 0
     ) {
       const updatedMachines = [...machines];
       const machine = updatedMachines[selectedMachineIndex];
 
-      if (!machine.alerts) machine.alerts = [];
+      if (!machine.iot_nodes) machine.iot_nodes = [];
 
-      machine.alerts.push({
+      machine.iot_nodes.push({
         name: sensorName.trim(),
-        parameter: sensorParameter.trim(),
-        unit: sensorUnit.trim(),
-        min: parseFloat(sensorMin),
-        max: parseFloat(sensorMax),
+        parameters: sensorParameters,
       });
 
       setMachines(updatedMachines);
 
-      // Reset inputs e fechar modal
+      // Reset
       setSelectedMachineIndex(null);
       setSensorName("");
-      setSensorParameter("");
-      setSensorUnit("");
-      setSensorMin("");
-      setSensorMax("");
+      setSensorParameters([]);
       setShowSensorModal(false);
     } else {
-      alert("Preencha todos os campos corretamente.");
+      alert("Preencha o nome do sensor e adicione pelo menos um parâmetro.");
     }
   };
+
+
+  const handleAddParameterToSensor = () => {
+    if (
+      currentParamName.trim() &&
+      currentParamUnit.trim() &&
+      currentParamMin !== "" &&
+      currentParamMax !== ""
+    ) {
+      setSensorParameters([
+        ...sensorParameters,
+        {
+          name: currentParamName.trim(),
+          unit: currentParamUnit.trim(),
+          min: parseFloat(currentParamMin),
+          max: parseFloat(currentParamMax),
+        },
+      ]);
+      // Limpar inputs
+      setCurrentParamName("");
+      setCurrentParamUnit("");
+      setCurrentParamMin("");
+      setCurrentParamMax("");
+    } else {
+      alert("Preencha todos os campos do parâmetro.");
+    }
+  };
+
+  const handleDeleteProductType = (index) => {
+    const updated = [...productTypes];
+    updated.splice(index, 1);
+    setProductTypes(updated);
+  };
+
+  const handleDeleteProcessType = (index) => {
+    const updated = [...processTypes];
+    updated.splice(index, 1);
+    setProcessTypes(updated);
+  };
+
+  const handleDeleteMachine = (index) => {
+    const updated = [...machines];
+    updated.splice(index, 1);
+    setMachines(updated);
+  };
+
 
   return (
     <>
@@ -173,19 +227,26 @@ export default function CompanySettings() {
             ) : (
               <ul className="product-list">
                 {productTypes.map((type, index) => (
-                  <li key={index}>{type}</li>
+                  <li key={index}>
+                    {type}
+                    <button
+                      className="delete-btn"
+                      onClick={() => {
+                        const updated = [...productTypes];
+                        updated.splice(index, 1);
+                        setProductTypes(updated);
+                      }}
+                      title="Eliminar tipo de produto"
+                    >
+                      <X size={14} />
+                    </button>
+                  </li>
                 ))}
               </ul>
             )}
-            <div className="add-product-form">
-              <input
-                type="text"
-                placeholder="Novo tipo de produto"
-                value={newProductName}
-                onChange={(e) => setNewProductName(e.target.value)}
-              />
-              <button onClick={handleAddProductType}>Adicionar</button>
-            </div>
+            <button className="custom-button outline" onClick={handleAddProductType}>
+              <Plus size={16} /> Adicionar Tipo de Produto
+            </button>
           </div>
 
           {/* Tipos de Processo */}
@@ -195,13 +256,19 @@ export default function CompanySettings() {
               <p className="empty-text">Nenhum tipo de processo adicionado.</p>
             ) : (
               <ul className="process-list">
-                {processTypes.map((type, index) => (
-                  <li key={index}>
-                    <strong>{type.name}</strong> – Posição: {type.position} – Produto:{" "}
-                    {type.productType}
-                  </li>
-                ))}
-              </ul>
+              {processTypes.map((type, index) => (
+                <li key={index}>
+                  <strong>{type.name}</strong> – Posição: {type.position} – Produto: {type.productType}
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteProcessType(index)}
+                    title="Eliminar processo"
+                  >
+                    <X size={14} />
+                  </button>
+                </li>
+              ))}
+            </ul>
             )}
             <div className="button-group">
               <button className="custom-button outline" onClick={handleCreateFromScratch}>
@@ -220,22 +287,33 @@ export default function CompanySettings() {
               <p className="empty-text">Nenhuma máquina adicionada.</p>
             ) : (
               <ul className="machine-list">
-                {machines.map((machine, index) => (
-                  <li key={index}>
-                    <strong>{machine.type}</strong> – {machine.manufacturer}
-                    {machine.alerts.length > 0 && (
-                      <ul className="alert-list">
-                        {machine.alerts.map((alert, i) => (
-                          <li key={i}>
-                            ⚠️ {alert.name} ({alert.unit}) entre {alert.min} e {alert.max}
-                            {alert.parameter ? ` – Parâmetro: ${alert.parameter}` : ""}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                ))}
-              </ul>
+              {machines.map((machine, index) => (
+                <li key={index}>
+                  <strong>{machine.type}</strong> de {machine.manufacturer}
+                  {machine.processType && (
+                    <div className="process-association">
+                      🔄 Associado ao processo: <em>{machine.processType}</em>
+                    </div>
+                  )}
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDeleteMachine(index)}
+                    title="Eliminar máquina"
+                  >
+                    <X size={14} />
+                  </button>
+                  {machine.alerts.length > 0 && (
+                    <ul className="alert-list">
+                      {machine.alerts.map((alert, i) => (
+                        <li key={i}>
+                          ⚠️ {alert.name} ({alert.unit}) entre {alert.min} e {alert.max}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
             )}
             <div className="button-group">
               <button
@@ -247,7 +325,7 @@ export default function CompanySettings() {
               <button
                 className="custom-button outline"
                 onClick={() => setShowSensorModal(true)}
-                disabled={machines.length === 0}
+                
               >
                 <Plus size={16} /> Adicionar Sensor
               </button>
@@ -255,7 +333,44 @@ export default function CompanySettings() {
           </div>
         </div>
       </div>
-
+      {/* Modal - Adicionar Produto */}
+       {showProductModal && (
+        <div className="modal-overlay" onClick={() => setShowProductModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="close-btn" onClick={() => setShowProductModal(false)}>
+              <X size={20} />
+            </button>
+            <h2>Adicionar Tipo de Produto</h2>
+            <select
+              value={newProductCategory}
+              onChange={(e) => setNewProductCategory(e.target.value)}
+            >
+              <option value="">Selecionar categoria</option>
+              <option value="carne">Carne</option>
+              <option value="laticínio">Laticínio</option>
+              <option value="peixe">Peixe</option>
+              <option value="mel & compotas">Mel & Compotas</option>
+              <option value="frutas & vegetais">Frutas & Vegetais</option>
+              <option value="massas & outros">Massas & Outros</option>
+              <option value="azeite">Azeite</option>
+              <option value="bebidas">Bebidas</option>
+              <option value="ovos">Ovos</option>
+              <option value="sal & ervas">Sal & Ervas</option>
+              <option value="tofu">Tofu</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Nome do produto"
+              value={newProductName}
+              onChange={(e) => setNewProductName(e.target.value)}
+            />
+            <div className="modal-actions">
+              <button onClick={confirmAddProductType}>Confirmar</button>
+              <button onClick={() => setShowProductModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Modal - Criar do zero */}
       {showScratchModal && (
         <div className="modal-overlay" onClick={() => setShowScratchModal(false)}>
@@ -272,7 +387,7 @@ export default function CompanySettings() {
             />
             <input
               type="number"
-              placeholder="Posição na cadeia"
+              placeholder="Etapa na cadeia"
               value={newProcessPosition}
               onChange={(e) => setNewProcessPosition(e.target.value)}
             />
@@ -302,15 +417,14 @@ export default function CompanySettings() {
             <button className="close-btn" onClick={() => setShowTemplateModal(false)}>
               <X size={20} />
             </button>
-            <h2>Escolha um Template</h2>
+            <h2>Template</h2>
             <ul className="template-list">
               {templates.map((t, index) => (
                 <li
                   key={index}
                   className={selectedTemplateIndex === index ? "selected" : ""}
-                  onClick={() => setSelectedTemplateIndex(index)}
                 >
-                  {t.name} – Posição sugerida: {t.position}
+                  {t.name} – Posição: {t.position}
                 </li>
               ))}
             </ul>
@@ -353,6 +467,17 @@ export default function CompanySettings() {
               value={machineManufacturer}
               onChange={(e) => setMachineManufacturer(e.target.value)}
             />
+            <select
+              value={selectedProcessType}
+              onChange={(e) => setSelectedProcessType(e.target.value)}
+            >
+              <option value="">Selecionar tipo de processo</option>
+              {processTypes.map((process, index) => (
+                <option key={index} value={process.name}>
+                  {process.name} (Produto: {process.productType})
+                </option>
+              ))}
+            </select>
             <div className="modal-actions">
               <button
                 onClick={() => {
@@ -370,60 +495,76 @@ export default function CompanySettings() {
 
       {/* Modal - Adicionar Sensor */}
       {showSensorModal && (
-        <div className="modal-overlay" onClick={() => setShowSensorModal(false)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="close-btn" onClick={() => setShowSensorModal(false)}>
-              <X size={20} />
-            </button>
-            <h2>Adicionar Sensor à Máquina</h2>
-            <select
-              value={selectedMachineIndex !== null ? selectedMachineIndex : ""}
-              onChange={(e) => setSelectedMachineIndex(parseInt(e.target.value))}
-            >
-              <option value="">Selecione a máquina</option>
-              {machines.map((machine, index) => (
-                <option key={index} value={index}>
-                  {machine.type} - {machine.manufacturer}
-                </option>
+      <div className="modal-overlay" onClick={() => setShowSensorModal(false)}>
+        <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <button className="close-btn" onClick={() => setShowSensorModal(false)}>
+            <X size={20} />
+          </button>
+          <h2>Adicionar Sensor à Máquina</h2>
+          <select
+            value={selectedMachineIndex !== null ? selectedMachineIndex : ""}
+            onChange={(e) => setSelectedMachineIndex(parseInt(e.target.value))}
+          >
+            <option value="">Selecione a máquina</option>
+            {machines.map((machine, index) => (
+              <option key={index} value={index}>
+                {machine.type} - {machine.manufacturer}
+              </option>
+            ))}
+          </select>
+
+          <input
+            type="text"
+            placeholder="Nome do sensor"
+            value={sensorName}
+            onChange={(e) => setSensorName(e.target.value)}
+          />
+
+          <h3>Adicionar Parâmetros</h3>
+          <input
+            type="text"
+            placeholder="Nome do parâmetro"
+            value={currentParamName}
+            onChange={(e) => setCurrentParamName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Unidade (ex: ºC)"
+            value={currentParamUnit}
+            onChange={(e) => setCurrentParamUnit(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Valor mínimo"
+            value={currentParamMin}
+            onChange={(e) => setCurrentParamMin(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Valor máximo"
+            value={currentParamMax}
+            onChange={(e) => setCurrentParamMax(e.target.value)}
+          />
+          <button className="add-parameter-btn" onClick={handleAddParameterToSensor}>Adicionar Parâmetro</button>
+
+          {sensorParameters.length > 0 && (
+            <ul className="parameter-preview">
+              {sensorParameters.map((param, index) => (
+                <li key={index}>
+                  ✅ {param.name} ({param.unit}) – entre {param.min} e {param.max}
+                </li>
               ))}
-            </select>
-            <input
-              type="text"
-              placeholder="Nome do sensor"
-              value={sensorName}
-              onChange={(e) => setSensorName(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Parâmetro medido (ex: Temperatura)"
-              value={sensorParameter}
-              onChange={(e) => setSensorParameter(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Unidade (ex: ºC)"
-              value={sensorUnit}
-              onChange={(e) => setSensorUnit(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Valor mínimo"
-              value={sensorMin}
-              onChange={(e) => setSensorMin(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Valor máximo"
-              value={sensorMax}
-              onChange={(e) => setSensorMax(e.target.value)}
-            />
-            <div className="modal-actions">
-              <button onClick={handleAddSensor}>Confirmar</button>
-              <button onClick={() => setShowSensorModal(false)}>Cancelar</button>
-            </div>
+            </ul>
+          )}
+
+          <div className="modal-actions">
+            <button onClick={handleAddSensor}>Confirmar</button>
+            <button onClick={() => setShowSensorModal(false)}>Cancelar</button>
           </div>
         </div>
-      )}
+      </div>
+    )}
+
     </>
   );
 }

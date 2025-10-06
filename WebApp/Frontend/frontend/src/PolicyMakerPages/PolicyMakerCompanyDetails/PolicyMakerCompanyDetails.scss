@@ -11,34 +11,6 @@
     flex-wrap: wrap;
   }
 
-  .sidebar {
-    width: 300px;
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 10px;
-    border: 2px solid #009fe3;
-
-    h2 {
-      font-size: 20px;
-      margin-bottom: 1rem;
-      color: #0077c0;
-    }
-
-    p {
-      font-size: 14px;
-      color: #333;
-      margin-bottom: 0.5rem;
-    }
-
-    ul {
-      padding-left: 1rem;
-      li {
-        font-size: 14px;
-        color: #333;
-      }
-    }
-  }
-
   .company-details {
     flex: 1;
     border: 2px solid #009fe3;
@@ -58,11 +30,17 @@
       margin-bottom: 0.5rem;
     }
 
+    .info{
+      font-size: 22px;
+      color: #0077c0;
+      margin: 2rem 0 1rem;
+      text-align: center;
+    }
+
     h2 {
       font-size: 20px;
       color: #0077c0;
       margin: 2rem 0 1rem;
-      text-align: center;
     }
 
     table {

@@ -6,7 +6,7 @@ import PolicyMakerHomepage from './PolicyMakerPages/PolicyMakerHomepage/PolicyMa
 import PolicyMakerDashboard from './PolicyMakerPages/PolicyMakerDashboard/PolicyMakerDashboard';
 import PolicyMakerReports from './PolicyMakerPages/PolicyMakerReports/PolicyMakersReports';
 import PolicyMakerCompanyDetails from './PolicyMakerPages/PolicyMakerCompanyDetails/PolicyMakerCompanyDetails';
-import CompanyProcesses from './CompanyPages/CompanyProcesses/CompanyProcesses';
+import CompanyRH from './CompanyPages/CompanyProcesses/CompanyRH';
 import CompanyHomepage from './CompanyPages/CompanyHomepage/CompanyHomepage';
 import ProcessInstance from './CompanyPages/ProcessInstance/ProcessInstance';
 import CompanyHistory from './CompanyPages/CompanyHistory/CompanyHistory';
@@ -35,7 +35,7 @@ function App() {
             <Route path="/policy-maker/reports" element={<PolicyMakerReports />} />
             <Route path='/policy-maker/company-details' element={<PolicyMakerCompanyDetails />} />
             {/* Company Routes*/}
-            <Route path='/company/active-processes' element={<CompanyProcesses />} />
+            <Route path='/company/employees' element={<CompanyRH />} />
             <Route path='/company/history' element={<CompanyHistory />} />
             <Route path='/company/homepage' element={<CompanyHomepage />} />
             <Route path='/company/process/:processId' element={<ProcessInstance />} />

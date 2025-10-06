@@ -9,7 +9,7 @@ import {
 import { useState, useEffect } from 'react';
 import './PolicyMakerDashboard.scss';
 import Navbar from '../../Components/PolicyMakerNavbar/PolicyMakerNavbar';
-import axios from 'axios';
+// import axios from 'axios';
 
 // Função para achatar os dados por ano
 const flattenTimeline = (data) =>
@@ -48,6 +48,99 @@ const filterByTime = (data, time) => {
   return flattened;
 };
 
+// MOCK DATA GENERATORS
+const generateMockTimelineData = () => {
+  const now = new Date();
+  const startYear = now.getFullYear() - 2;
+  const data = [];
+
+  for (let year = startYear; year <= now.getFullYear(); year++) {
+    const months = [];
+    const maxMonth = year === now.getFullYear() ? now.getMonth() : 11;
+
+    for (let i = 0; i <= maxMonth; i++) {
+      months.push({
+        month: new Date(0, i).toLocaleString('pt-PT', { month: 'short' }),
+        revenue: Math.floor(50000 + Math.random() * 10000),
+        jobs: Math.floor(300 + Math.random() * 100),
+        female: Math.floor(120 + Math.random() * 50),
+        male: Math.floor(180 + Math.random() * 50),
+      });
+    }
+
+    data.push({ year, data: months });
+  }
+
+  return data;
+};
+
+const generateMockResourceConsumption = () => {
+  const now = new Date();
+  const startYear = now.getFullYear() - 2;
+  const data = [];
+
+  for (let year = startYear; year <= now.getFullYear(); year++) {
+    const months = [];
+    const maxMonth = year === now.getFullYear() ? now.getMonth() : 11;
+
+    for (let i = 0; i <= maxMonth; i++) {
+      months.push({
+        month: new Date(0, i).toLocaleString('pt-PT', { month: 'short' }),
+        water: Math.floor(10000 + Math.random() * 20000),
+        energy: Math.floor(20000 + Math.random() * 30000),
+      });
+    }
+
+    data.push({ year, data: months });
+  }
+
+  return data;
+};
+
+const generateMockEcoFootprint = () => {
+  const now = new Date();
+  const startYear = now.getFullYear() - 2;
+  const data = [];
+
+  for (let year = startYear; year <= now.getFullYear(); year++) {
+    const months = [];
+    const maxMonth = year === now.getFullYear() ? now.getMonth() : 11;
+
+    for (let i = 0; i <= maxMonth; i++) {
+      months.push({
+        month: new Date(0, i).toLocaleString('pt-PT', { month: 'short' }),
+        footprint: Math.floor(1000 + Math.random() * 5000),
+      });
+    }
+
+    data.push({ year, data: months });
+  }
+
+  return data;
+};
+
+// Dados simulados
+const mockSummary = {
+  "receita gerada": 550000,
+  "água consumida": 1500000,
+  "energia consumida": 2200000,
+  "Resíduos gerados": 180000,
+  "male Employees": 1200,
+  "female Employees": 950
+};
+
+const mockCompanyDistribution = [
+  { name: 'Produtores', value: 12 },
+  { name: 'Queijarias', value: 45 },
+  { name: 'Vendedores', value: 20 }
+];
+
+const mockEcoByCompany = [
+  { name: 'Produtores', value: 80000 },
+  { name: 'Queijarias', value: 60000 },
+  { name: 'Vendedores', value: 40000 }
+];
+
 export default function PolicyMakerDashboard() {
   const [economicTime, setEconomicTime] = useState('total');
   const [employmentTime, setEmploymentTime] = useState('total');
@@ -59,14 +152,16 @@ export default function PolicyMakerDashboard() {
   const [ecoFootprintData, setEcoFootprintData] = useState([]);
 
   const [data, setData] = useState({
-    summary: {},
-    timeline: [],
-    resourceConsumption: [],
-    companyDistribution: [],
-    ecoFootprintTimeline: [],
-    ecoByCompany: []
+    summary: mockSummary,
+    timeline: generateMockTimelineData(),
+    resourceConsumption: generateMockResourceConsumption(),
+    companyDistribution: mockCompanyDistribution,
+    ecoFootprintTimeline: generateMockEcoFootprint(),
+    ecoByCompany: mockEcoByCompany
   });
 
+  // ⚠️ Quando quiser reativar a API, descomente este bloco
+  /*
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/api/dashboard/summary/')
       .then(response => {
@@ -82,6 +177,7 @@ export default function PolicyMakerDashboard() {
         console.error('Erro ao buscar dados do dashboard:', error);
       });
   }, []);
+  */
 
   useEffect(() => {
     setEconomicData(filterByTime(data.timeline, economicTime));
@@ -106,20 +202,20 @@ export default function PolicyMakerDashboard() {
         <div className="section">
           <h3>Dados Gerais</h3>
           <div className="kpi-cards">
-          {Object.entries(data.summary)
-            .filter(([label]) => label !== 'male Employees' && label !== 'female Employees')
-            .map(([label, value]) => (
-              <div className="kpi-card" key={label}>
-                <h4>{label.toUpperCase()}</h4>
-                <p>
-                  {label === 'receita gerada' ? `${(value / 1000000).toFixed(1)} M€` :
-                  label === 'água consumida' ? `${value} L` :
-                  label === 'energia consumida' ? `${value} kW` :
-                  label === 'Resíduos gerados' ? `${value} Kg` :
-                  value}
-                </p>
-              </div>
-            ))}
+            {Object.entries(data.summary)
+              .filter(([label]) => label !== 'male Employees' && label !== 'female Employees')
+              .map(([label, value]) => (
+                <div className="kpi-card" key={label}>
+                  <h4>{label.toUpperCase()}</h4>
+                  <p>
+                    {label === 'receita gerada' ? `${value} €` :
+                      label === 'água consumida' ? `${value} L` :
+                        label === 'energia consumida' ? `${value} kW` :
+                          label === 'Resíduos gerados' ? `${value} Kg` :
+                            value}
+                  </p>
+                </div>
+              ))}
           </div>
 
           <div className="small-charts-grid">

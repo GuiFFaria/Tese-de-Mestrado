@@ -882,13 +882,17 @@ def get_company_counties(request):
     
 # View to get the details of the companies from a specific county
 @api_view(['GET'])
+
 def report_by_region(request):
     concelho = request.GET.get('concelho')
     if not concelho:
         return Response({'error': 'Parâmetro "concelho" é obrigatório.'}, status=400)
 
     try:
-        companies = Company.objects.filter(location__county__iexact=concelho)
+        meses_pt = ['Jan', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+
+        # Filtro por concelho dentro de JSONField
+        companies = Company.objects.filter(**{'location__county__iexact': concelho})
         employees = Employee.objects.filter(company__in=companies)
         processes = Process.objects.filter(process_type__manufacturer__in=companies)
         products = Product.objects.filter(product_type__manufacturer__in=companies)
@@ -913,7 +917,6 @@ def report_by_region(request):
         eco_by_company = []
         eco_company_timeline = []
         revenue_by_company_timeline = []
-        meses_pt = ['Jan', 'Feb', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
 
         for company in companies:
             pegada_total = Process.objects.filter(process_type__manufacturer=company).aggregate(
@@ -926,7 +929,7 @@ def report_by_region(request):
                 'value': float(pegada_total)
             })
 
-            # Eco footprint agrupado por ano
+            # Eco footprint por ano/mês
             processos_empresa = Process.objects.filter(process_type__manufacturer=company)
             eco_por_ano = defaultdict(lambda: [0] * 12)
             for proc in processos_empresa:
@@ -950,7 +953,7 @@ def report_by_region(request):
                 'timeline': timeline_eco
             })
 
-            # Revenue agrupado por ano
+            # Revenue por ano/mês
             produtos_empresa = Product.objects.filter(product_type__manufacturer=company, status='sold')
             revenue_por_ano = defaultdict(lambda: [0] * 12)
             for produto in produtos_empresa:
@@ -974,7 +977,37 @@ def report_by_region(request):
                 'timeline': timeline_revenue
             })
 
-        # Novo agrupamento para resourceConsumption no formato { year, data: [ {month, water, energy} ]}
+        # Revenue por Região
+        products_all = Product.objects.filter(status='sold').select_related('product_type__manufacturer')
+        revenue_by_region_map = defaultdict(lambda: defaultdict(lambda: [0] * 12))
+
+        for product in products_all:
+            manufacturer = product.product_type.manufacturer
+            location = manufacturer.location if manufacturer else None
+            region = location.get('county') if location else None
+            if not region or not product.sell_date:
+                continue
+            ano = product.sell_date.year
+            mes = product.sell_date.month
+            revenue_by_region_map[region][ano][mes - 1] += product.price or 0
+
+        revenue_by_region = []
+        for region, yearly_data in sorted(revenue_by_region_map.items()):
+            timeline = []
+            for ano, valores in sorted(yearly_data.items()):
+                timeline.append({
+                    'year': ano,
+                    'data': [
+                        {'month': meses_pt[i], 'value': int(valores[i])}
+                        for i in range(12)
+                    ]
+                })
+            revenue_by_region.append({
+                'region': region,
+                'timeline': timeline
+            })
+
+        # Resource Consumption (água e energia)
         resource_by_month = processes.annotate(mes=TruncMonth('start_date')).values('mes') \
             .annotate(water=Sum('water_consumption'), energy=Sum('energy_consumption'))
 
@@ -992,7 +1025,7 @@ def report_by_region(request):
             for ano, dados in sorted(resource_by_year.items())
         ]
 
-        # ✅ ecoFootprintTimeline ajustado para agrupar por ano e mês
+        # Eco footprint timeline global
         eco_monthly = processes.annotate(mes=TruncMonth('start_date')).values('mes') \
             .annotate(waste=Sum('waste_generation'))
 
@@ -1022,7 +1055,8 @@ def report_by_region(request):
             'revenueByCompanyTimeline': revenue_by_company_timeline,
             'resourceConsumption': resource_consumption,
             'ecoFootprintTimeline': eco_footprint_timeline,
-            'companyList': company_list
+            'companyList': company_list,
+            'revenueByRegion': revenue_by_region  # ✅ Adicionado aqui
         })
 
     except Exception as e:
@@ -1128,8 +1162,7 @@ def company_details(request, company_id):
             } for pt in company.product_types.prefetch_related('products').all()
         ]
     }
-    print("Company Details Data:")
-    print(data)
+
     return Response(data, status=status.HTTP_200_OK)
 
 @api_view(['GET'])
@@ -1206,6 +1239,8 @@ def company_charts_data(request, company_id):
                 'value': float(item['total_revenue'])
             })
         revenue_timeline = fill_missing_months(revenue_timeline, ['month', 'value'])
+
+        print(f"Revenue Timeline: {revenue_timeline}")
 
         # Pegada Ecológica
         eco_qs = Process.objects.filter(

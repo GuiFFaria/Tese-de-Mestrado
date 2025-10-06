@@ -156,30 +156,24 @@ export default function PolicyMakerReports() {
     const COLORS = ['#2563eb', '#10b981', '#f59e0b', '#f43f5e', '#6366f1'];
 
     if (kpi === 'resourceConsumption') {
-      // Para recursos naturais, vamos processar água e energia separadamente
+      // Processar água e energia separadamente
       const allMonthsSet = new Set();
       const waterDatasets = [];
       const energyDatasets = [];
-      
+
       data.allZones.forEach((zoneData, idx) => {
         const timeline = zoneData[kpi] || [];
-        
-        // Flatten dos dados para obter todos os meses
+
         const flatTimeline = timeline.flatMap(year => {
-          if (!Array.isArray(year?.data)) {
-            console.warn("Ano inválido ou sem dados:", year);
-            return [];
-          }
+          if (!Array.isArray(year?.data)) return [];
           return year.data.map(m => ({
             ...m,
             month: `${m.month} ${year.year}`
           }));
         });
 
-        // Adicionar todos os meses ao Set
         flatTimeline.forEach(item => allMonthsSet.add(item.month));
 
-        // Criar mapas para água e energia desta zona
         const waterMonthMap = {};
         const energyMonthMap = {};
 
@@ -189,10 +183,9 @@ export default function PolicyMakerReports() {
           energyMonthMap[key] = (energyMonthMap[key] || 0) + (item.energy || 0);
         });
 
-        // Adicionar datasets para esta zona
         waterDatasets.push({
           label: zoneData.zone,
-          data: [], // Será preenchido depois
+          data: [],
           borderColor: COLORS[idx % COLORS.length],
           backgroundColor: COLORS[idx % COLORS.length] + '88',
           fill: false,
@@ -202,7 +195,7 @@ export default function PolicyMakerReports() {
 
         energyDatasets.push({
           label: zoneData.zone,
-          data: [], // Será preenchido depois
+          data: [],
           borderColor: COLORS[idx % COLORS.length],
           backgroundColor: COLORS[idx % COLORS.length] + '88',
           fill: false,
@@ -211,9 +204,7 @@ export default function PolicyMakerReports() {
         });
       });
 
-      // Ordenar meses cronologicamente
-      const allMonths = Array.from(allMonthsSet);
-      allMonths.sort((a, b) => {
+      const allMonths = Array.from(allMonthsSet).sort((a, b) => {
         const parse = str => {
           const [m, y] = str.split(' ');
           const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -222,18 +213,16 @@ export default function PolicyMakerReports() {
         return parse(a) - parse(b);
       });
 
-      // Preencher os dados ordenados para cada dataset
       waterDatasets.forEach(dataset => {
         dataset.data = allMonths.map(month => dataset.monthMap[month] || 0);
-        delete dataset.monthMap; // Limpar referência temporária
+        delete dataset.monthMap;
       });
 
       energyDatasets.forEach(dataset => {
         dataset.data = allMonths.map(month => dataset.monthMap[month] || 0);
-        delete dataset.monthMap; // Limpar referência temporária
+        delete dataset.monthMap;
       });
 
-      // Retornar dados estruturados para água e energia
       return {
         water: {
           label: 'Consumo de Água',
@@ -251,32 +240,40 @@ export default function PolicyMakerReports() {
         }
       };
     } else {
-      // Processar outros KPIs (código existente mantido)
+      // Outros KPIs (inclui revenueByRegion com estrutura especial)
       const allMonthsSet = new Set();
       const allDatasets = [];
 
       data.allZones.forEach((zoneData, idx) => {
         const timeline = zoneData[kpi] || [];
-        
-        const flatTimeline = kpi === 'revenueByCompanyTimeline'
-          ? timeline.flatMap(c => (c.timeline || []))
-          : timeline.flatMap(year => {
-              if (!Array.isArray(year?.data)) {
-                console.warn("Ano inválido ou sem dados:", year);
-                return [];
-              }
-              return year.data.map(m => ({
-                ...m,
-                month: `${m.month} ${year.year}`
-              }));
-            });
+
+        let flatTimeline = [];
+
+        if (kpi === 'revenueByRegion') {
+          flatTimeline = timeline.flatMap(regionItem =>
+            regionItem.timeline.flatMap(yearItem =>
+              yearItem.data.map(entry => ({
+                ...entry,
+                month: `${entry.month} ${yearItem.year}`
+              }))
+            )
+          );
+        } else {
+          flatTimeline = timeline.flatMap(year => {
+            if (!Array.isArray(year?.data)) return [];
+            return year.data.map(m => ({
+              ...m,
+              month: `${m.month} ${year.year}`
+            }));
+          });
+        }
 
         flatTimeline.forEach(item => allMonthsSet.add(item.month));
 
         const monthMap = {};
         flatTimeline.forEach(item => {
           const key = item.month;
-          const value = kpi === 'revenueByCompanyTimeline' ? (item.revenue || 0) : (item.waste || item.value || 0);
+          const value = item.value ?? item.revenue ?? item.waste ?? 0;
           monthMap[key] = (monthMap[key] || 0) + value;
         });
 
@@ -291,9 +288,7 @@ export default function PolicyMakerReports() {
         });
       });
 
-      // Ordenar meses e preencher os dados
-      const allMonths = Array.from(allMonthsSet);
-      allMonths.sort((a, b) => {
+      const allMonths = Array.from(allMonthsSet).sort((a, b) => {
         const parse = str => {
           const [m, y] = str.split(' ');
           const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
@@ -304,13 +299,14 @@ export default function PolicyMakerReports() {
 
       allDatasets.forEach(dataset => {
         dataset.data = allMonths.map(month => dataset.monthMap[month] || 0);
-        delete dataset.monthMap; // Limpar referência temporária
+        delete dataset.monthMap;
       });
 
       const KPI_LABELS = {
         ecoFootprintTimeline: 'Resíduos Gerados',
         resourceConsumption: 'Consumo de Recursos Naturais',
-        revenueByCompanyTimeline: 'Receita Total',
+        revenueByCompanyTimeline: 'Receita por Empresa',
+        revenueByRegion: 'Receita por Concelho',
       };
 
       return {
@@ -322,13 +318,12 @@ export default function PolicyMakerReports() {
       };
     }
   };
-
   // Configuração corrigida do useMemo para gráficos comparativos
   const comparativeCharts = useMemo(() => {
     if (!data || data.type !== 'global') return null;
 
     const results = [];
-    const KPIs = ['ecoFootprintTimeline', 'resourceConsumption', 'revenueByCompanyTimeline'];
+    const KPIs = ['ecoFootprintTimeline', 'resourceConsumption', 'revenueByRegion'];
 
     KPIs.forEach(kpi => {
       const chartData = buildChartData(kpi);
@@ -362,38 +357,149 @@ export default function PolicyMakerReports() {
   }, []);
 
   // Carregar dados baseado na zona selecionada
-  useEffect(() => {
-    const fetchData = async () => {
-      if (availableZones.length === 0) return; // Esperar até as zonas serem carregadas
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (availableZones.length === 0) return; // Esperar até as zonas serem carregadas
+
+  //     setLoading(true);
+  //     setError(null);
+      
+  //     try {
+  //       if (selectedZone === 'Geopark') {
+  //         // Carregar dados de todos os concelhos para comparação
+  //         const requests = availableZones.map(zone =>
+  //           axios.get(`http://127.0.0.1:8000/api/report/by-region/?concelho=${zone}`)
+  //             .then(res => ({ zone, ...res.data }))
+  //         );
+
+  //         const allData = await Promise.all(requests);
+  //         setData({ type: 'global', allZones: allData });
+  //         console.log('Dados carregados para Geopark:', allData);
+  //       } else {
+  //         // Carregar dados do concelho específico
+  //         const response = await axios.get(`http://127.0.0.1:8000/api/report/by-region/?concelho=${selectedZone}`);
+  //         setData(response.data);
+  //         console.log(response.data);
+  //       }
+  //     } catch (error) {
+  //       console.error('Erro ao buscar dados:', error);
+  //       setError('Erro ao carregar dados');
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [selectedZone, availableZones]);
+
+   useEffect(() => {
+      if (availableZones.length === 0) return;
 
       setLoading(true);
       setError(null);
-      
-      try {
-        if (selectedZone === 'Geopark') {
-          // Carregar dados de todos os concelhos para comparação
-          const requests = availableZones.map(zone =>
-            axios.get(`http://127.0.0.1:8000/api/report/by-region/?concelho=${zone}`)
-              .then(res => ({ zone, ...res.data }))
-          );
 
-          const allData = await Promise.all(requests);
-          setData({ type: 'global', allZones: allData });
-        } else {
-          // Carregar dados do concelho específico
-          const response = await axios.get(`http://127.0.0.1:8000/api/report/by-region/?concelho=${selectedZone}`);
-          setData(response.data);
-        }
-      } catch (error) {
-        console.error('Erro ao buscar dados:', error);
-        setError('Erro ao carregar dados');
-      } finally {
-        setLoading(false);
+      const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+      const currentYear = new Date().getFullYear();
+      const currentMonthIndex = new Date().getMonth(); // 0-11
+
+      const generateTimeline = () => [
+        {
+          year: currentYear,
+          data: months.slice(0, currentMonthIndex + 1).map((m) => ({
+            month: m,
+            value: Math.floor(Math.random() * 100 + 50),
+            waste: Math.floor(Math.random() * 100 + 30),
+            water: Math.floor(Math.random() * 400),
+            energy: Math.floor(Math.random() * 700),
+            revenue: Math.floor(Math.random() * 10000 + 3000),
+          })),
+        },
+      ];
+
+      const generateCompany = (suffix) => {
+        const types = ['Produtores', 'Queijarias', 'Vendedores'];
+        const randomType = types[Math.floor(Math.random() * types.length)];
+
+        return {
+          id: `empresa-${suffix}`,
+          name: `Empresa ${suffix}`,
+          type: randomType,
+          timeline: generateTimeline(),
+        };
+      };
+
+      const generateZoneData = (zone) => {
+        const companyList = [
+          generateCompany(zone + ' A'),
+          generateCompany(zone + ' B'),
+          generateCompany(zone + ' C'),
+        ];
+
+        const revenueTimeline = months.slice(0, currentMonthIndex + 1).map((month, i) => {
+          const totalRevenue = companyList.reduce((sum, company) => {
+            const dataEntry = company.timeline?.[0]?.data?.[i];
+            return sum + (dataEntry?.revenue || 0);
+          }, 0);
+          return { month, value: totalRevenue };
+        });
+
+        return {
+          zone,
+          ecoFootprintTimeline: generateTimeline(),
+          resourceConsumption: generateTimeline(),
+          companyList,
+          revenueByCompanyTimeline: companyList,
+          revenueByRegion: [
+            {
+              region: zone,
+              timeline: [
+                {
+                  year: currentYear,
+                  data: revenueTimeline,
+                },
+              ],
+            },
+          ],
+        };
+      };
+
+      if (selectedZone === 'Geopark') {
+        const allData = availableZones.map((zone) => generateZoneData(zone));
+        setData({ type: 'global', allZones: allData });
+      } else {
+        const companyList = [generateCompany(1), generateCompany(2), generateCompany(3)];
+
+        setData({
+          summary: {
+            "Empresas Ativas": Math.floor(Math.random() * 40 + 10),
+            "Resíduos (t)": Math.floor(Math.random() * 500 + 100),
+            "Consumo de Água (m³)": Math.floor(Math.random() * 1000 + 300),
+            "Consumo de Energia (kWh)": Math.floor(Math.random() * 2000 + 500),
+            "Receita Total (€)": Math.floor(Math.random() * 60000 + 10000),
+          },
+          companyList,
+          companyDistribution: [
+            { name: 'Produtores', value: 10 },
+            { name: 'Queijarias', value: 5 },
+            { name: 'Vendedores', value: 7 },
+          ],
+          ecoFootprintTimeline: generateTimeline(),
+          resourceConsumption: generateTimeline(),
+          revenueByCompanyTimeline: companyList,
+          revenueByRegion: [
+            {
+              region: selectedZone,
+              timeline: generateTimeline().map(entry => ({
+                ...entry,
+                data: entry.data.map(d => ({ month: d.month, value: d.revenue }))
+              }))
+            }
+          ]
+        });
       }
-    };
 
-    fetchData();
-  }, [selectedZone, availableZones]);
+      setLoading(false);
+    }, [selectedZone, availableZones]);
 
   const handleZoneChange = (e) => {
     const newZone = e.target.value;

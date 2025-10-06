@@ -6,6 +6,67 @@ import CompanyNavbar from '../../Components/CompanyNavbar/CompanyNavbar';
 export default function CompanyHomepage() {
   const [company, setCompany] = useState(null);
   const [boardData, setBoardData] = useState([]);
+
+   //const company = { name: 'Queijaria da Serra Lda.' };
+
+  // const boardData = {
+  //   metrics: {
+  //     jobs: 12,
+  //     water_last_year: 95000,
+  //     energy_last_year: 28000,
+  //     waste_last_year: 5200,
+  //   },
+  //   boards: {
+  //     product_types: [
+  //       {
+  //         type: 'Queijo da Serra',
+  //         process_types: [
+  //           {
+  //             process_type: 'Fabricação',
+  //             processes: [], // sem processos ativos
+  //           },
+  //           {
+  //             process_type: 'Cura',
+  //             processes: [
+  //               {
+  //                 reference: 'QS-CU-002',
+  //                 batch: '3B',
+  //                 products_number: 80,
+  //                 start_date: '2025-07-12T08:30:00Z',
+  //               },
+  //               {
+  //                 reference: 'QS-CU-003',
+  //                 batch: '2C',
+  //                 products_number: 75,
+  //                 start_date: '2025-07-10T09:00:00Z',
+  //               },
+  //             ],
+  //           },
+  //           {
+  //             process_type: 'Maturação',
+  //             processes: [
+  //               {
+  //                 reference: 'QS-MA-004',
+  //                 batch: '1A',
+  //                 products_number: 50,
+  //                 start_date: '2025-07-06T14:00:00Z',
+  //               },
+  //               {
+  //                 reference: 'QS-MA-005',
+  //                 batch: '1B',
+  //                 products_number: 60,
+  //                 start_date: '2025-07-05T11:45:00Z',
+  //               },
+  //             ],
+  //           },
+  //         ],
+  //       },
+  //     ],
+  //   },
+  // };
+
+
+
   const [showModal, setShowModal] = useState(false);
   const [selectedProductType, setSelectedProductType] = useState('');
   const [rawMaterials, setRawMaterials] = useState([]);
@@ -16,6 +77,11 @@ export default function CompanyHomepage() {
 
   const navigate = useNavigate();
 
+  const materiasPrimasIniciais = [
+    { id: 1, name: 'Leite' },
+    { id: 2, name: 'Sal' },
+    { id: 3, name: 'Cardo' },
+  ];
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -33,19 +99,22 @@ export default function CompanyHomepage() {
         .then((response) => response.json())
         .then((data) => {
           setBoardData(data);
+          setRawMaterials(materiasPrimasIniciais);
         })
         .catch((error) => {
           console.error('Erro ao buscar dados do quadro:', error);
         });
 
-      fetch('http://localhost:8000/api/raw-materials')
-        .then((response) => response.json())
-        .then((data) => {
-          setRawMaterials(data);
-        })
-        .catch((error) => {
-          console.error('Erro ao buscar matérias-primas:', error);
-        });
+      // fetch('http://localhost:8000/api/raw-materials')
+      //   .then((response) => response.json())
+      //   .then((data) => {
+      //     setRawMaterials(data);
+      //     setRawMaterials(materiasPrimasIniciais);
+      //     console.log('rawMaterials:', rawMaterials);
+      //   })
+      //   .catch((error) => {
+      //     console.error('Erro ao buscar matérias-primas:', error);
+      //   });
     }
   }, []);
 
@@ -94,15 +163,15 @@ export default function CompanyHomepage() {
           </div>
           <div className="metric-card">
             <span>ÁGUA (último ano)</span>
-            <strong>{boardData?.metrics?.water_last_year ?? 0} L</strong>
+            <strong>{/*boardData?.metrics?.water_last_year ?? 0*/}175.000 L</strong>
           </div>
           <div className="metric-card">
             <span>ENERGIA (último ano)</span>
-            <strong>{boardData?.metrics?.energy_last_year ?? 0} kWh</strong>
+            <strong>{/*boardData?.metrics?.energy_last_year ?? 0*/}22.500 kWh</strong>
           </div>
           <div className="metric-card">
             <span>RESÍDUOS (último ano)</span>
-            <strong>{boardData?.metrics?.waste_last_year ?? 0} kg</strong>
+            <strong>{/*boardData?.metrics?.waste_last_year ?? 0*/}43.000 kg</strong>
           </div>
         </div>
 
@@ -118,7 +187,7 @@ export default function CompanyHomepage() {
                     setShowModal(true);
                   }}
                 >
-                  Iniciar Processo
+                  Iniciar Produção
                 </button>
               </div>
               <div

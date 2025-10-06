@@ -155,16 +155,16 @@ class EmployeeProcessList(models.Model):
 
 class ProductType(models.Model):
     type = models.CharField(max_length=255, choices=[
-        ('meat', 'Meat'),
-        ('dairy', 'Dairy'),
-        ('fish', 'Fish'),
-        ('honey & marmalade', 'Honey & Marmalade'),
-        ('fruit & vegetables', 'Fruit & Vegetables'),
-        ('pasta & other', 'Pasta & Other'),
-        ('oil', 'Oil'),
-        ('beverages', 'Beverages'),
-        ('eggs', 'Eggs'),
-        ('salt & herbs', 'Salt & Herbs'),
+        ('carne', 'Carne'),
+        ('laticínio', 'Laticínio'),
+        ('peixe', 'Peixe'),
+        ('mel & compotas', 'Mel & Compotas'),
+        ('frutas & vegetais', 'Frutas & Vegetais'),
+        ('massas & outros', 'Massas & Outros'),
+        ('azeite', 'Azeite'),
+        ('bebidas', 'Bebidas'),
+        ('ovos', 'Ovos'),
+        ('sal & ervas', 'Sal & Ervas'),
         ('tofu', 'Tofu'),
         ])
     description = models.TextField()
@@ -212,14 +212,16 @@ class Product(models.Model):
     product_reference = models.CharField(max_length=255, unique=True)  # Unique reference for the product
     expiration_date = models.DateField()  # Date when the product expires
     chain_position = models.IntegerField()
-    batch_number = models.CharField(max_length=100, unique=True)
+    batch_number = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"{self.product_type.type} Product - {self.product_reference} by {self.product_type.manufacturer.name}"
+        return f"{self.product_type.type} Product - {self.product_reference} by {self.product_type.manufacturer.name} - batch {self.batch_number}"
     
 class ProductProcessList(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_process_list')
     process = models.ForeignKey(Process, on_delete=models.CASCADE, related_name='products')
+    entry_date = models.DateTimeField()  # Date when the product entered the process
+    exit_date = models.DateTimeField(blank=True, null=True)  # Optional exit date
 
     def __str__(self):
         return f"{self.product.product_reference} in process {self.process.reference}"

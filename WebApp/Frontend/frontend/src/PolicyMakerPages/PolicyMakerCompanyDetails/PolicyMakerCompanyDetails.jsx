@@ -91,27 +91,23 @@ export default function PolicyMakerCompanyDetails() {
     <div className="company-details-page">
       <Navbar />
       <div className="page-content">
-        <aside className="sidebar">
-          <h2>{company.name}</h2>
-          <p><strong>Endereço:</strong> {company.location.street}, {company.location.city}, {company.location.county}</p>
-          <p><strong>Certificações:</strong></p>
-          {companyDetails?.certifications?.length > 0 ? (
-            <ul>
-              {companyDetails.certifications.map((cert, idx) => (
-                <li key={idx}>{cert.name}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>A carregar certificações ou nenhuma encontrada.</p>
-          )}
-        </aside>
-
         {companyDetails && (
           <section className="company-details">
-            <h1>Informações de Produção</h1>
-            <p><strong>Quantidade Anual Produzida:</strong> {companyDetails.annual_production_quantity} unidades</p>
+            <h1>{company.name}</h1>
+            <p><strong>Endereço:</strong> {company.location.street}, {company.location.city}, {company.location.county}</p>
             <p><strong>Funcionários:</strong> {companyDetails?.employee_stats?.total} (Homens: {companyDetails?.employee_stats?.male}, Mulheres: {companyDetails?.employee_stats?.female})</p>
-
+            <p><strong>Certificações:</strong></p>
+            {companyDetails?.certifications?.length > 0 ? (
+              <ul>
+                {companyDetails.certifications.map((cert, idx) => (
+                  <li key={idx}>{cert.name}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>A carregar certificações ou nenhuma encontrada.</p>
+            )}
+            <h2 className="info">Informações de Produção</h2>
+            <p><strong>Quantidade Anual Produzida:</strong> {companyDetails.annual_production_quantity} unidades</p>
             <h2>Tipos de Produtos</h2>
             <table>
               <thead>

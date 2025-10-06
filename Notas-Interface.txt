@@ -74,3 +74,20 @@ ToDO:
 -Página de Empregabilidade
 - Definições - acrescentar máquinas e alertas
 - Homepage -acrescentar quantidades atuais de matérias-Primas
+
+Pontos:
+
+Fabricação - nº
+prensagem - nº - 1 lote
+Cura - 2/3 lotes
+maturação 2/3 lotes
+
+
+{"city": "Manteigas", "county": "Manteigas", "street": "Av. da Estrela", "latitude": "40.406", "longitude": "-7.612"}
+
+
+Ajustar gráficos para a data atual ser o limite do gráfico
+
+Página de Histórico:
+ - passar para gestão de lote:
+  - nº de lote, data de inicio, nº de unidades produzidas, quantas unidades em cada fase da cadeia, descartados?, utilização agua, energia, residuos, nº de horas por trabalhadores, receitas, despesas
